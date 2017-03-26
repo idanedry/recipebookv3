@@ -1,0 +1,110 @@
+<style>
+	::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    	color:    grey;
+	}
+
+	.addButtonHover:hover {
+		transition: 0.2s;	
+/*		border-radius: 5px;
+    	background: grey;*/
+    	color: grey;	
+    }
+
+
+</style>
+
+<form [formGroup]="recipeForm" (ngSubmit)="onSubmit()">
+	
+
+<div class="row">
+  <div class="col-md clearfix">
+    
+
+    <h3 class="display-4" style="font-size: 2.0em">Generals</h3>
+	<div class="clearfix">
+		<input type="text" 
+		  class="form-control" 
+		  style="width: 300px" 
+		  placeholder="Name"
+		  formControlName="name">
+	</div>
+	<h3 class="display-4" style="font-size: 2.0em">Ingredients</h3>
+
+	<div class="clearfix" formArrayName="ingredients">
+		<div class="row" *ngFor="let ingredient of recipeForm.controls['ingredients'].controls; let i=index">
+			<div formGroupName="{{i}}">
+				<i style="line-height: 150%; cursor: pointer; margin-left: 20px" class="material-icons float-left addButtonHover" (click)="onRemoveItem(i)" >clear</i>
+				<input 
+					type="text" 
+					class="form-control float-left" 
+					style="margin-left: 20px ; width: 160px; margin-right: 10px" 
+					placeholder="Ingredient"
+					formControlName="name">
+				<input 
+					type="text" 
+					class="form-control" 
+					style="margin-left: 20px ; width: 85px" 
+					placeholder="Amount"
+					formControlName="amount">
+		</div>
+	</div>
+
+
+	<div class="clearfix" >
+		<div class="row">
+			<div>
+				<i style="line-height: 150%; cursor: pointer; margin-left: 20px" class="material-icons float-left addButtonHover" (click)="onAddItem(itemName.value, itemAmount.value)" >add</i>
+				<input 
+					type="text" 
+					class="form-control float-left" 
+					style="margin-left: 20px ; width: 160px; margin-right: 10px" 
+					placeholder="Ingredient"
+					#itemName>
+				<input 
+					type="text" 
+					class="form-control" 
+					style="margin-left: 20px ; width: 85px" 
+					placeholder="Amount"
+					#itemAmount>
+			</div>
+		</div>
+	</div>
+
+
+		
+	</div>
+
+
+      <p style="margin: 0 0 0.1px 15px" *ngFor="let item of selectedRecipe?.ingredients" class="lead"> {{item.name}} - {{item.amount}}</p>
+
+	<h3 class="display-4" style="font-size:2.0em">Steps</h3>
+	<div class="clearfix">
+		<textarea 
+		  class="form-control"  
+		  rows="5" 
+		  formControlName="steps"></textarea>
+	</div>
+
+	<div class="clearfix">	
+		<h3 class="display-4" style="font-size: 2.0em">Image</h3>
+		<input type="text" 
+		  class="form-control" 
+		  style="width: 300px" 
+		  placeholder="Image Path"
+		  formControlName="imagePath"
+		  #imageUrl>
+		<img [src]="imageUrl.value" class="img-thumbnail" alt="Responsive image" *ngIf="imageUrl.value">
+	</div>
+  <div class="clearfix">
+  	<div class="row" >
+  			<button style="margin: 30px 0 0 0" type="submit" class="btn btn-success" [disabled]="!recipeForm.valid">Save</button>
+			<button (click)="onCancel()" style="margin:  30px 0 0 10px" type="submit" class="btn btn-danger">Cancel</button>
+  	</div>
+  </div>
+
+    <br>
+  </div>
+</div>
+
+</form>
+

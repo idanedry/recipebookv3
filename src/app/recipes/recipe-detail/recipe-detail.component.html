@@ -1,0 +1,38 @@
+<style>
+	.shopping {
+		position: relative; 
+		top:5px; 
+		cursor: pointer; 
+	}
+
+	.shopping:hover {
+		transition: 0.2s;	
+/*		border-radius: 5px;
+    	background: grey;*/
+    	color: grey;
+	}
+  
+
+
+
+
+</style>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h1 class="display-3">{{selectedRecipe?.name}}</h1>
+    <button class="btn btn-primary" (click)="onEdit()" >Edit</button>
+    <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+    <h3 class="display-4" style="font-size: 2.0em">Ingredients</h3>
+    <div class="clearfix" *ngFor="let item of selectedRecipe?.ingredients">
+      <i (click)="onAddToShoppingCart(item)" class="material-icons float-left shopping">add_shopping_cart</i>
+  	  <p style="max-width: 50%"  class="lead "> {{item.name}} - {{item.amount}}</p>
+    </div>
+
+    <h3 class="display-4" style="font-size: 2.0em">Steps</h3>
+
+    <p style="margin-left: 15px" class="lead">{{selectedRecipe?.steps}}</p>
+    <img src="{{selectedRecipe?.imagePath}}" class=" img-thumbnail">
+    <br>
+  </div>
+</div>

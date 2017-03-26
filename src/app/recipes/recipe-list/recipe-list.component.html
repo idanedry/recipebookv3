@@ -1,0 +1,19 @@
+<div [routerLink]="['new']" class="cardd clearfix hover"  routerLinkActive="active">
+	<div class="titlePlace float-left ">
+		<h2 class="display-4" style="font-size: 2.0em; line-height: 250%; margin-left: 5px">Add Recipe</h2>
+	</div>
+	<div class="imgPlace float-right" >
+		<img src="http://www.epicurious.com/static/img/svg/icon-recipe-pot.svg" >
+	</div> 
+</div>
+<rb-recipe-item *ngFor="let recipe of recipes ; let i = index" [recipe]="recipe" [recipeId]="i"></rb-recipe-item>
+<div *ngIf="isLoading">
+	<div *ngFor="let i of [1,2,3]" class="cardd clearfix hover"  routerLinkActive="active">
+		<div class="titlePlace float-left ">
+			<h2 class="display-4" style="font-size: 2.0em; line-height: 250%; margin-left: 5px">Recipe</h2>
+		</div>
+		<div class="imgPlace float-right" >
+			<!-- <img src="../assets/add.jpg" > -->
+		</div> 
+	</div>	
+</div>

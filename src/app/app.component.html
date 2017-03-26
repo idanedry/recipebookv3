@@ -1,3 +1,27 @@
-<h1>
-  {{title}}
-</h1>
+
+<nav class="navbar navbar-toggleable-xl navbar-light bg-faded" style="margin-bottom: 10px;   
+	 		box-shadow: 0 1px 2px rgba(0,0,0,0.16), 
+	 		0 1px 2px rgba(0,0,0,0.23);">
+  
+  <a [routerLink]="['recipes']" class="navbar-brand" style="font-size:1.5em; color:grey">RecipeBook</a>
+  <div class="navbar-collapse collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+
+    <!-- In order to pull the items to right remove the next 2 lines -->
+    <!-- </ul> -->
+    <!-- <ul class="navbar-nav"> -->
+        <li class="nav-item">
+            <i (click)="onShoppingCart()" 
+               (contextmenu)="onContextMenu($event,'null')"  
+               class="material-icons nav-link">shopping_cart</i>
+            <span *ngIf="cartLength > 0 " class="mdl-badge" 
+               [attr.data-badge]="cartLength" 
+               style="left:-20px; top:-10px"></span>
+            <context-menu></context-menu>
+        </li>
+    </ul>
+  </div>
+</nav>
+
+
+<router-outlet></router-outlet>
