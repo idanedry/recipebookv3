@@ -5,8 +5,8 @@ import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { Subscription } from 'rxjs/Rx';
 import { ContextMenuService } from 'angular2-contextmenu';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-
-
+import { AngularFire } from 'angularfire2';
+import { AuthService} from './auth/auth.service';
 
 @Component({
   selector: 'rb-root',
@@ -17,13 +17,17 @@ export class AppComponent implements OnInit, OnDestroy {
 	subscription : Subscription;
 	result;
 	private cartLength;
+	photo : string;
+	name : string ;
 
 	constructor(private _recipeService: RecipeService, 
 			overlay: Overlay, 
 			vcRef: ViewContainerRef,
 			public modal: Modal,
 			public toastr: ToastsManager,
-			private contextMenuService: ContextMenuService
+			private contextMenuService: ContextMenuService,
+			private af: AngularFire,
+			private authService : AuthService,
 			 ) {
 		overlay.defaultViewContainer = vcRef;
 		this.toastr.setRootViewContainerRef(vcRef);
@@ -34,9 +38,18 @@ export class AppComponent implements OnInit, OnDestroy {
 			.subscribe(res => {
 				this.cart = res;
 				this.cartLength = res.length;
-
 			});
-
+		this.af.auth.subscribe(authState => {
+				if(!authState) {
+					this.photo = null;
+					this.name = null;
+					console.log("Not loogged in");
+					return; 
+				}
+				console.log("Is logged in")
+				this.photo = authState.auth.photoURL;
+				this.name = authState.auth.displayName;
+		});
 	}
 
 	onShoppingCart() {
@@ -54,11 +67,6 @@ export class AppComponent implements OnInit, OnDestroy {
 		    .title('To Buy')
 		    .body(test)
 		    .open();
-	}
-
-	ngOnDestroy(){
-		console.log("on destroy")
-		this.subscription.unsubscribe();
 	}
 
 	confirmCheck(){
@@ -98,5 +106,20 @@ export class AppComponent implements OnInit, OnDestroy {
 	    $event.preventDefault();
 	    $event.stopPropagation();
   }
+
+
+  onLogin(){
+  	this.authService.login();
+  }
+
+  onLogout(){
+  	this.authService.logout();
+  }
+
+  ngOnDestroy(){
+	console.log("on destroy")
+	this.subscription.unsubscribe();
+  }
+
 
 }

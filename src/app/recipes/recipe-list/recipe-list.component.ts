@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../recipe';
 import { RecipeService } from '../recipes.service';
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
-
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'rb-recipe-list',
@@ -15,7 +15,8 @@ export class RecipeListComponent implements OnInit {
   recipes;	
   private isLoading : boolean = false ;
   constructor( private _recipeService: RecipeService,
-  			   private af: AngularFire) {}
+  			   private af: AngularFire,
+           private _authService : AuthService) {}
 
   ngOnInit() {
     // this.recipes = this._recipeService.getRecipes()

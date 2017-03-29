@@ -18,11 +18,17 @@
 
 </style>
 
+
+<!-- <button (click)="logged()">logged in?</button> -->
 <div class="row">
   <div class="col-xs-12">
     <h1 class="display-3">{{selectedRecipe?.name}}</h1>
-    <button class="btn btn-primary" (click)="onEdit()" >Edit</button>
-    <button class="btn btn-danger" (click)="onDelete()">Delete</button>
+    <!-- <ng-template [ngIf]="_authService.isAuthenticated()"> -->
+      <!-- <button *ngIf="_authService.isLoggedIn " class="btn btn-primary" (click)="onEdit()" >Edit</button> -->
+      <button *ngIf="uidMatch" class="btn btn-primary" (click)="onEdit()" >Edit</button>
+      <button *ngIf="uidMatch" class="btn btn-danger" (click)="onDelete()">Delete</button>  
+    <!-- </ng-template> -->
+    
     <h3 class="display-4" style="font-size: 2.0em">Ingredients</h3>
     <div class="clearfix" *ngFor="let item of selectedRecipe?.ingredients">
       <i (click)="onAddToShoppingCart(item)" class="material-icons float-left shopping">add_shopping_cart</i>

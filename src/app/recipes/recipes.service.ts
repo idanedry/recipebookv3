@@ -4,6 +4,7 @@ import { Ingredient } from '../shared/ingredient';
 import { AngularFire ,FirebaseListObservable} from 'angularfire2';
 import 'rxjs/add/operator/map';
 import { Subscription } from 'rxjs'
+// import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class RecipeService implements OnDestroy {
@@ -14,7 +15,9 @@ export class RecipeService implements OnDestroy {
   recipesArray : Recipe[];
   selected ;
 
-  constructor(private af: AngularFire) {
+  constructor(private af: AngularFire,
+              // private authService : AuthService
+               ) {
   }
 
   // private recipes : FirebaseListObservable<Recipe[]> = this.af.database.list('/recipes');
@@ -46,6 +49,7 @@ export class RecipeService implements OnDestroy {
   }
 
   addRecipe(recipe: Recipe){
+    // console.log(this.authService.)
     this.af.database.list('/recipes').push(recipe);
   }
 

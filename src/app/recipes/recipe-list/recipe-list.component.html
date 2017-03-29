@@ -1,4 +1,4 @@
-<div [routerLink]="['new']" class="cardd clearfix hover"  routerLinkActive="active">
+<div *ngIf="_authService.isLoggedIn" [routerLink]="['new']" class="cardd clearfix hover"  routerLinkActive="active">
 	<div class="titlePlace float-left ">
 		<h2 class="display-4" style="font-size: 2.0em; line-height: 250%; margin-left: 5px">Add Recipe</h2>
 	</div>

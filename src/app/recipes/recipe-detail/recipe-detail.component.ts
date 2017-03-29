@@ -7,7 +7,7 @@ import { Ingredient } from '../../shared/ingredient';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { Overlay } from 'angular2-modal';
 // import { Modal } from 'angular2-modal/plugins/bootstrap';
-
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'rb-recipe-detail',
@@ -22,15 +22,19 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
   private subscription: Subscription;
   private recipeIndex: number;
   result : boolean;
+  private uidMatch: boolean = false;
 
   constructor( private route: ActivatedRoute,
   			   private _router: Router,
   			   private _recipeService: RecipeService,
            public toastr: ToastsManager,
            vcr: ViewContainerRef,
+           private _authService : AuthService
            ) {
   this.toastr.setRootViewContainerRef(vcr);
   }
+
+
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(
@@ -38,7 +42,14 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
         this.recipeIndex = params['id'];
         // this.selectedRecipe = this._recipeService.getRecipe(this.recipeIndex);
         this._recipeService.getRecipes()
-          .subscribe(recipes => this.selectedRecipe = recipes[this.recipeIndex])
+          .subscribe(recipes => {
+              this.selectedRecipe = recipes[this.recipeIndex];
+              if ( this.selectedRecipe.uid === this._authService.uid) {
+                this.uidMatch = true;
+              } else {
+                this.uidMatch = false;
+              }
+          });
       }
     );
   }
@@ -84,6 +95,8 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
     this.subscription.unsubscribe();
   }
 
-
+  logged(){
+    console.log(this._authService.isLoggedIn)
+  }
 
 }

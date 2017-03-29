@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { AngularFireModule } from 'angularfire2';
+import { AngularFireModule, AuthProviders, AuthMethods } from 'angularfire2';
 
 import { AppComponent } from './app.component';
 import { RecipesComponent } from './recipes/recipes.component';
@@ -17,6 +17,7 @@ import { DropdownDirective } from './recipes/dropdown.directive';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
+import { AuthService} from './auth/auth.service';
 
 import {ContextMenuModule} from 'angular2-contextmenu';
 
@@ -35,6 +36,12 @@ export const firebaseConfig = {
     storageBucket: "recipebook-2d2c3.appspot.com",
     messagingSenderId: "85349312625"
   };
+
+const myFirebaseAuthConfig = {
+      provider: AuthProviders.Facebook,
+      method: AuthMethods.Popup
+    };
+
 
 @NgModule({
   declarations: [
@@ -56,12 +63,12 @@ export const firebaseConfig = {
     ModalModule.forRoot(),
     BootstrapModalModule,
     ToastModule.forRoot(),
-    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig),
     ContextMenuModule.forRoot({
       useBootstrap4: true,
     }) 
   ],
-  providers: [RecipeService ,{provide: ToastOptions, useClass: CustomOption}],
+  providers: [RecipeService ,AuthService ,{provide: ToastOptions, useClass: CustomOption}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

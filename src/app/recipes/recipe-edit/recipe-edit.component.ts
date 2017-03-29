@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Rx'
 import { RecipeService } from '../recipes.service';
 import { Recipe } from '../recipe';
 import { FormArray, FormGroup, FormControl , Validators, FormBuilder} from '@angular/forms';
-
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'rb-recipe-edit',
@@ -21,7 +21,8 @@ export class RecipeEditComponent implements OnInit,OnDestroy {
   constructor(private _route: ActivatedRoute,
   			  private _recipeService: RecipeService,
   			  private _formBuilder: FormBuilder,
-  			  private _router: Router
+  			  private _router: Router,
+          private _authService : AuthService
   			  ) {}
 
   ngOnInit() {
@@ -41,8 +42,9 @@ export class RecipeEditComponent implements OnInit,OnDestroy {
   }
 
   onSubmit(){
+    this.recipeForm.value.uid = this._authService.uid;
   	const newRecipe = this.recipeForm.value;
-  	console.log('new recipe', newRecipe)
+  	console.log('onSubmit - new recipe', newRecipe)
   	if(this.isNew){
   		this._recipeService.addRecipe(newRecipe);
   	} else {
