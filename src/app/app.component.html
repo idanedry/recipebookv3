@@ -33,6 +33,7 @@
               for="demo-menu-lower-right">
             <!-- <li class="mdl-menu__item" (click)="onSignUp()">Signup</li> -->
             <li *ngIf="!name" class="mdl-menu__item" (click)="onLogin()">Login</li>
+            <li *ngIf="name" class="mdl-menu__item" (click)="onClearShoppingCart()">Clear Cart</li>
             <li *ngIf="name" class="mdl-menu__item" (click)="onLogout()">Logout</li>
             <!-- <li disabled class="mdl-menu__item">Disabled Action</li> -->
           </ul>
