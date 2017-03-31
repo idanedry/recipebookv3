@@ -14,7 +14,8 @@ import { AuthService} from './auth/auth.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
 	private cart;
-	subscription : Subscription;
+	cartSubscription : Subscription;
+	authSubscription : Subscription;
 	result;
 	private cartLength;
 	photo : string;
@@ -34,12 +35,12 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(){
-		this.subscription = this._recipeService.getShoppingCart()
+		this.cartSubscription = this._recipeService.getShoppingCart()
 			.subscribe(res => {
 				this.cart = res;
 				this.cartLength = res.length;
 			});
-		this.af.auth.subscribe(authState => {
+		this.authSubscription = this.af.auth.subscribe(authState => {
 				if(!authState) {
 					this.photo = null;
 					this.name = null;
@@ -118,7 +119,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
 	console.log("on destroy")
-	this.subscription.unsubscribe();
+	this.cartSubscription.unsubscribe();
+	this.authSubscription.unsubscribe();
   }
 
 
