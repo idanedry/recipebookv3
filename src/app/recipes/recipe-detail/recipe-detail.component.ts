@@ -76,7 +76,10 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
   }
 
   onAddToShoppingCart(item: Ingredient){
-    this._recipeService.addToShoppingCart(item);
+    if(!this._authService.uid) {
+      return
+    }
+    this._recipeService.addToShoppingCart(item, this._authService.uid);
     this.toastr.success(item.name + ' Added!');
   }
 

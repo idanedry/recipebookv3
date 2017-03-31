@@ -19,6 +19,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
 import { AuthService} from './auth/auth.service';
 
+
 import {ContextMenuModule} from 'angular2-contextmenu';
 
 export class CustomOption extends ToastOptions {

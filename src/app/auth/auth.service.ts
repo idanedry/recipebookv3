@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFire, AuthProviders, AuthMethods} from 'angularfire2';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
   isLoggedIn : boolean;
-  token : string;
   uid : string;
-  displayName : string ;
-  photoURL : string ;
   authState = null ;
-  user;
 
-
-  constructor(private af : AngularFire) { 
+  constructor(private af : AngularFire, private _router : Router) { 
  	this.af.auth.subscribe( user => {
  			if(user) {
  				this.isLoggedIn = true;
@@ -26,32 +22,32 @@ export class AuthService {
 
   login(){
   	this.af.auth.login({
-  		// provider: AuthProviders.Facebook,
-  		// method: AuthMethods.Popup
   	}).then(authState => {
   		this.authState = authState;
+  		this._router.navigate([''])
   		console.log("Logged in succesfully");
   	}).catch(error => console.log(error))
   }
 
   logout(){
   	this.af.auth.logout();
+  	this._router.navigate([''])
   	console.log("Logout.")
   }
 
-  getSomething(){
-  	this.af.auth.subscribe( user => {
-  		if(!user) {
-  			this.user = {}; 
-  			this.isLoggedIn = false;
-  			// console.log(this.user);
-  			return
-  		}
-		this.user = user; 
-  		this.isLoggedIn = true;
-  		console.log(this.user);
-  	})
-  }
+  // getSomething(){
+  // 	this.af.auth.subscribe( user => {
+  // 		if(!user) {
+  // 			this.user = {}; 
+  // 			this.isLoggedIn = false;
+  // 			// console.log(this.user);
+  // 			return
+  // 		}
+		// this.user = user; 
+  // 		this.isLoggedIn = true;
+  // 		console.log(this.user);
+  // 	})
+  // }
 
   // isAuthenticated(){
   // }

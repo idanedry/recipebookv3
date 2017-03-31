@@ -61,16 +61,28 @@ export class RecipeService implements OnDestroy {
     this.af.database.object('/recipes/' + recipe.$key).set(null);
   }
 
-  getShoppingCart(){
+  getShoppingCart(uid? :string){
+    if(uid) {
+      return this.af.database.list('/shoppingCart/'+ uid);
+    }
     return this.af.database.list('/shoppingCart');
   }
 
-  addToShoppingCart(item: Ingredient){
-    this.af.database.list('/shoppingCart').push(item);
+  addToShoppingCart(item: Ingredient, uid? : string){
+    if(uid){
+      this.af.database.list('/shoppingCart/'+ uid).push(item);
+    } else {
+      this.af.database.list('/shoppingCart').push(item);  
+    }
   }
 
-  deleteShoppingCart(){
-    this.af.database.object('/shoppingCart').set(null);
+  deleteShoppingCart(uid?){
+    if(uid){
+      console.log("what?!")
+      this.af.database.object('/shoppingCart/'+ uid).set(null);
+    } else {
+      this.af.database.object('/shoppingCart').set(null);  
+    }
   }
 
   ngOnDestroy(){

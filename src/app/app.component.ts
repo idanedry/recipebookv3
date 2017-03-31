@@ -13,11 +13,11 @@ import { AuthService} from './auth/auth.service';
   templateUrl: './app.component.html'
 })
 export class AppComponent implements OnInit, OnDestroy {
-	private cart;
+	private cart = [];
 	cartSubscription : Subscription;
 	authSubscription : Subscription;
 	result;
-	private cartLength;
+	private cartLength = 0;
 	photo : string;
 	name : string ;
 
@@ -35,37 +35,40 @@ export class AppComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(){
-		this.cartSubscription = this._recipeService.getShoppingCart()
-			.subscribe(res => {
-				this.cart = res;
-				this.cartLength = res.length;
-			});
-		this.authSubscription = this.af.auth.subscribe(authState => {
+
+		this.authSubscription = this.af.auth
+			.subscribe(authState => {
 				if(!authState) {
 					this.photo = null;
 					this.name = null;
 					console.log("Not loogged in");
+					this.cart = [];
+					this.cartLength = 0;					
 					return; 
 				}
 				console.log("Is logged in")
 				this.photo = authState.auth.photoURL;
 				this.name = authState.auth.displayName;
+				this.cartSubscription = this._recipeService.getShoppingCart(authState.auth.uid)
+					.subscribe(res => {
+						console.log("Is received shoppinh cart")
+						this.cart = res;
+						this.cartLength = res.length;
+					});
 		});
 	}
 
 	onShoppingCart() {
-		console.log("clicked!");
 		let test = '';
 		for(let i = 0 ; i < this.cart.length ; i ++) {
 			test += '<li class="list-group">' + this.cart[i].name + ' - ' + this.cart[i].amount + '</li>';
 		}
-		console.log(test);
 		this.modal.alert()
 		    .size('sm')
 		    .isBlocking(false)
 		    .showClose(true)
 		    .keyboard(27)
-		    .title('To Buy')
+		    .title('Shopping Cart')
 		    .body(test)
 		    .open();
 	}
@@ -85,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		const dialog = this.confirmCheck();
 		dialog.then((resultPromise) => {
             return resultPromise.result.then((result) => {
-                this._recipeService.deleteShoppingCart();
+                this._recipeService.deleteShoppingCart(this.authService.uid);
                 this.toastr.info('Shopping List Cleared!')
                 this.result = true;
             },
@@ -118,7 +121,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-	console.log("on destroy")
 	this.cartSubscription.unsubscribe();
 	this.authSubscription.unsubscribe();
   }
