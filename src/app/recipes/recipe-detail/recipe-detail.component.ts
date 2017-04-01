@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, Input, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Recipe } from '../recipe';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipes.service';
 import { Subscription } from 'rxjs/Rx';
 import { Ingredient } from '../../shared/ingredient';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import {ToastsManager, Toast} from 'ng2-toastr';
 import { Overlay } from 'angular2-modal';
 // import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { AuthService } from '../../auth/auth.service';
@@ -20,6 +20,8 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
   selectedRecipe ;//: Recipe;
   
   private subscription: Subscription;
+  private getRecipeSubscription: Subscription;
+  
   private recipeIndex: number;
   result : boolean;
   private uidMatch: boolean = false;
@@ -28,20 +30,17 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
   			   private _router: Router,
   			   private _recipeService: RecipeService,
            public toastr: ToastsManager,
-           vcr: ViewContainerRef,
+           // public modal: Modal,
            private _authService : AuthService
            ) {
-  this.toastr.setRootViewContainerRef(vcr);
   }
-
-
 
   ngOnInit() {
     this.subscription = this.route.params.subscribe(
       (params: any) => {
         this.recipeIndex = params['id'];
         // this.selectedRecipe = this._recipeService.getRecipe(this.recipeIndex);
-        this._recipeService.getRecipes()
+        this.getRecipeSubscription = this._recipeService.getRecipes()
           .subscribe(recipes => {
               this.selectedRecipe = recipes[this.recipeIndex];
               if ( this.selectedRecipe.uid === this._authService.uid) {
@@ -59,17 +58,20 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
   }
 
   onDelete(){
-    // this._recipeService.deleteRecipe(this.selectedRecipe);
     this.toastr.error('Deleted')
-    // this._router.navigate(['../'])
-
-
+      .then( (toast) => {
+        this._router.navigate(['/recipes'])
+        this._recipeService.deleteRecipe(this.selectedRecipe);
+      });
     // const dialog = this.confirmCheck();
     // dialog.then((resultPromise) => {
     //         return resultPromise.result.then((result) => {
-    //             this._recipeService.deleteRecipe(this.selectedRecipe)
-    //             this.toastr.error('Deleted');
-    //             this.result = true;
+    //             // this._recipeService.deleteRecipe(this.selectedRecipe)
+    //             this.toastr.error('Deleted')
+    //               .then( (toast) => {
+    //                 this._router.navigate(['recipes'])
+    //               });
+    //               this.result = true;
     //         },
     //         () =>  this.result = false);
     //   });
@@ -95,7 +97,9 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
   // }
 
   ngOnDestroy(){
+    this.getRecipeSubscription.unsubscribe();
     this.subscription.unsubscribe();
+    console.log("on destroy")
   }
 
   logged(){

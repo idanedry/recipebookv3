@@ -9,15 +9,15 @@ export class AuthService {
   authState = null ;
 
   constructor(private af : AngularFire, private _router : Router) { 
- 	this.af.auth.subscribe( user => {
- 			if(user) {
- 				this.isLoggedIn = true;
- 				this.uid = user.uid;
- 			} else {
- 				this.isLoggedIn = false;
- 				this.uid = "";
- 			}
-  		})
+   	this.af.auth.subscribe( user => {
+   			if(user) {
+   				this.isLoggedIn = true;
+   				this.uid = user.uid;
+   			} else {
+   				this.isLoggedIn = false;
+   				this.uid = "";
+   			}
+    		})
 	}
 
   login(){
@@ -34,22 +34,5 @@ export class AuthService {
   	this._router.navigate([''])
   	console.log("Logout.")
   }
-
-  // getSomething(){
-  // 	this.af.auth.subscribe( user => {
-  // 		if(!user) {
-  // 			this.user = {}; 
-  // 			this.isLoggedIn = false;
-  // 			// console.log(this.user);
-  // 			return
-  // 		}
-		// this.user = user; 
-  // 		this.isLoggedIn = true;
-  // 		console.log(this.user);
-  // 	})
-  // }
-
-  // isAuthenticated(){
-  // }
 
 }

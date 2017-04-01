@@ -4,7 +4,7 @@ import { Overlay } from 'angular2-modal';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { Subscription } from 'rxjs/Rx';
 import { ContextMenuService } from 'angular2-contextmenu';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { ToastsManager, Toast} from 'ng2-toastr';
 import { AngularFire } from 'angularfire2';
 import { AuthService} from './auth/auth.service';
 
@@ -22,8 +22,8 @@ export class AppComponent implements OnInit, OnDestroy {
 	name : string ;
 
 	constructor(private _recipeService: RecipeService, 
-			overlay: Overlay, 
-			vcRef: ViewContainerRef,
+			public overlay: Overlay, 
+			public vcRef: ViewContainerRef,
 			public modal: Modal,
 			public toastr: ToastsManager,
 			private contextMenuService: ContextMenuService,

@@ -13,9 +13,6 @@
 	}
   
 
-
-
-
 </style>
 
 
@@ -30,8 +27,8 @@
     <!-- </ng-template> -->
     
     <h3 class="display-4" style="font-size: 2.0em">Ingredients</h3>
-    <div class="clearfix" *ngFor="let item of selectedRecipe?.ingredients">
-      <i (click)="onAddToShoppingCart(item)" class="material-icons float-left shopping">add_shopping_cart</i>
+    <div  class="clearfix" *ngFor="let item of selectedRecipe?.ingredients">
+      <i (click)="onAddToShoppingCart(item)"  class="material-icons float-left shopping">add_shopping_cart</i>
   	  <p style="max-width: 50%"  class="lead "> {{item.name}} - {{item.amount}}</p>
     </div>
 
