@@ -13,11 +13,11 @@ import { RecipeService } from './recipes/recipes.service';
 import { routing } from "./app.routing";
 import { RecipeStartComponent } from './recipes/recipe-start.component';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
-import { DropdownDirective } from './recipes/dropdown.directive';
 import { ModalModule } from 'angular2-modal';
 import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
 import { AuthService} from './auth/auth.service';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 import {ContextMenuModule} from 'angular2-contextmenu';
@@ -53,7 +53,6 @@ const myFirebaseAuthConfig = {
     RecipeItemComponent,
     RecipeStartComponent,
     RecipeEditComponent,
-    DropdownDirective
   ],
   imports: [
     BrowserModule,
@@ -63,6 +62,7 @@ const myFirebaseAuthConfig = {
     ReactiveFormsModule,
     ModalModule.forRoot(),
     BootstrapModalModule,
+    BrowserAnimationsModule,
     ToastModule.forRoot(),
     AngularFireModule.initializeApp(firebaseConfig, myFirebaseAuthConfig),
     ContextMenuModule.forRoot({
