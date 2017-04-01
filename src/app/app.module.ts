@@ -18,7 +18,7 @@ import { BootstrapModalModule } from 'angular2-modal/plugins/bootstrap';
 import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
 import { AuthService} from './auth/auth.service';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-
+import { AuthGuard } from './auth/auth-guard.service';
 
 import {ContextMenuModule} from 'angular2-contextmenu';
 
@@ -69,7 +69,7 @@ const myFirebaseAuthConfig = {
       useBootstrap4: true,
     }) 
   ],
-  providers: [RecipeService ,AuthService ,{provide: ToastOptions, useClass: CustomOption}],
+  providers: [RecipeService ,AuthService ,AuthGuard ,{provide: ToastOptions, useClass: CustomOption}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
