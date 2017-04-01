@@ -41,17 +41,14 @@ export class AppComponent implements OnInit, OnDestroy {
 				if(!authState) {
 					this.photo = null;
 					this.name = null;
-					console.log("Not loogged in");
 					this.cart = [];
 					this.cartLength = 0;					
 					return; 
 				}
-				console.log("Is logged in")
 				this.photo = authState.auth.photoURL;
 				this.name = authState.auth.displayName;
 				this.cartSubscription = this._recipeService.getShoppingCart(authState.auth.uid)
 					.subscribe(res => {
-						console.log("Is received shoppinh cart")
 						this.cart = res;
 						this.cartLength = res.length;
 					});

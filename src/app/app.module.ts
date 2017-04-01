@@ -19,7 +19,6 @@ import { ToastModule, ToastOptions } from 'ng2-toastr/ng2-toastr';
 import { AuthService} from './auth/auth.service';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AuthGuard } from './auth/auth-guard.service';
-
 import {ContextMenuModule} from 'angular2-contextmenu';
 
 export class CustomOption extends ToastOptions {

@@ -1,19 +1,21 @@
-<div *ngIf="_authService.isLoggedIn" [routerLink]="['new']" class="cardd clearfix hover"  routerLinkActive="active">
+<!-- <div  *ngIf="_authService.isLoggedIn" [routerLink]="['new']" class="cardd clearfix hover"  routerLinkActive="active">
 	<div class="titlePlace float-left ">
 		<h2 class="display-4" style="font-size: 2.0em; line-height: 250%; margin-left: 5px">Add Recipe</h2>
 	</div>
 	<div class="imgPlace float-right" >
 		<img src="http://www.epicurious.com/static/img/svg/icon-recipe-pot.svg" >
 	</div> 
-</div>
-<rb-recipe-item *ngFor="let recipe of recipes ; let i = index" [recipe]="recipe" [recipeId]="i"></rb-recipe-item>
+</div> -->
+
+<rb-recipe-item  [@list1]  *ngFor="let recipe of recipes ; let i = index" [recipe]="recipe" [recipeId]="i"></rb-recipe-item>
+
 <div *ngIf="isLoading">
-	<div *ngFor="let i of fakeRecipes" class="cardd clearfix hover"  routerLinkActive="active">
+	<div *ngFor="let i of fakeRecipes" class="cardd clearfix hover"  [@list1] >
 		<div class="titlePlace float-left ">
 			<h2 class="display-4" style="font-size: 2.0em; line-height: 250%; margin-left: 5px">Recipe</h2>
 		</div>
 		<div class="imgPlace float-right" >
-			<!-- <img src="../assets/add.jpg" > -->
+				<!-- <div style="background-color:#F7F7F7; margin:5%; width: 90%; height: 90%" >	</div> -->
 		</div> 
 	</div>	
 </div>

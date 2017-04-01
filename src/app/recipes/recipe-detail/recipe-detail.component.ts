@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy,HostBinding, Input } from '@angular/core';
 import { Recipe } from '../recipe';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipes.service';
@@ -8,14 +8,26 @@ import { ToastsManager, Toast} from 'ng2-toastr';
 import { Overlay } from 'angular2-modal';
 import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { AuthService } from '../../auth/auth.service';
+import { routeFadeStateTrigger, routeSlideStateTrigger } from '../../shared/route-animation';
+
+
 
 @Component({
   selector: 'rb-recipe-detail',
   templateUrl: './recipe-detail.component.html',
-  styles: []
+  styles: [`
+
+  :host {
+    display : block;
+  }
+  
+  `],
+  animations: [ routeFadeStateTrigger, routeSlideStateTrigger]
 })
 
 export class RecipeDetailComponent implements OnInit,OnDestroy {
+  @HostBinding('@routeSlideState') routeAnimation = true;
+
   selectedRecipe ;
   
   private subscription: Subscription;
@@ -38,7 +50,6 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
     this.subscription = this.route.params.subscribe(
       (params: any) => {
         this.recipeIndex = params['id'];
-        // this.selectedRecipe = this._recipeService.getRecipe(this.recipeIndex);
         this.getRecipeSubscription = this._recipeService.getRecipes()
           .subscribe(recipes => {
               this.selectedRecipe = recipes[this.recipeIndex];
@@ -93,11 +104,7 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
   ngOnDestroy(){
     this.getRecipeSubscription.unsubscribe();
     this.subscription.unsubscribe();
-    console.log("on destroy")
   }
 
-  logged(){
-    console.log(this._authService.isLoggedIn)
-  }
 
 }

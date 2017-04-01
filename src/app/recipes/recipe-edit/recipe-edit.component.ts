@@ -1,16 +1,21 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy ,HostBinding} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Rx'
 import { RecipeService } from '../recipes.service';
 import { Recipe } from '../recipe';
 import { FormArray, FormGroup, FormControl , Validators, FormBuilder} from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
+import { routeFadeStateTrigger, routeSlideStateTrigger } from '../../shared/route-animation';
 
 @Component({
   selector: 'rb-recipe-edit',
-  templateUrl: './recipe-edit.component.html'
+  templateUrl: './recipe-edit.component.html',
+  styles: [`:host { display : block }`],
+  animations: [ routeFadeStateTrigger, routeSlideStateTrigger]
+
 })
 export class RecipeEditComponent implements OnInit,OnDestroy {
+  @HostBinding('@routeSlideState') routeAnimation = true;
   private subscription: Subscription; 
   private recipeIndex: number;
   private recipe: Recipe;
