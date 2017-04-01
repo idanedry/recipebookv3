@@ -25,14 +25,12 @@ export class AuthService {
   	}).then(authState => {
   		this.authState = authState;
   		this._router.navigate([''])
-  		console.log("Logged in succesfully");
   	}).catch(error => console.log(error))
   }
 
   logout(){
   	this.af.auth.logout();
   	this._router.navigate([''])
-  	console.log("Logout.")
   }
 
 }
