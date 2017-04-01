@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipes.service';
 import { Subscription } from 'rxjs/Rx';
 import { Ingredient } from '../../shared/ingredient';
-import {ToastsManager, Toast} from 'ng2-toastr';
+import { ToastsManager, Toast} from 'ng2-toastr';
 import { Overlay } from 'angular2-modal';
-// import { Modal } from 'angular2-modal/plugins/bootstrap';
+import { Modal } from 'angular2-modal/plugins/bootstrap';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
@@ -16,8 +16,7 @@ import { AuthService } from '../../auth/auth.service';
 })
 
 export class RecipeDetailComponent implements OnInit,OnDestroy {
-  // selectedRecipe : Recipe;
-  selectedRecipe ;//: Recipe;
+  selectedRecipe ;
   
   private subscription: Subscription;
   private getRecipeSubscription: Subscription;
@@ -30,7 +29,7 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
   			   private _router: Router,
   			   private _recipeService: RecipeService,
            public toastr: ToastsManager,
-           // public modal: Modal,
+           public modal: Modal,
            private _authService : AuthService
            ) {
   }
@@ -57,24 +56,30 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
     this._router.navigate(['/recipes', this.recipeIndex, 'edit']);
   }
 
+  confirmCheck(){
+    return this.modal.confirm()
+        .size('sm')
+        .isBlocking(true)
+        .showClose(true)
+        .keyboard(27)
+        // .title('Are you sure?')
+        .body('Are you sure?')
+        .open();
+  }
+
   onDelete(){
-    this.toastr.error('Deleted')
-      .then( (toast) => {
-        this._router.navigate(['/recipes'])
-        this._recipeService.deleteRecipe(this.selectedRecipe);
+    const dialog = this.confirmCheck();
+    dialog.then((resultPromise) => {
+        return resultPromise.result.then((result) => {
+            this.toastr.error('Deleted')
+                .then( (toast) => {
+                      this._recipeService.deleteRecipe(this.selectedRecipe)
+                      this._router.navigate(['/recipes'])
+                });
+            this.result = true;
+        },
+        () =>  this.result = false);
       });
-    // const dialog = this.confirmCheck();
-    // dialog.then((resultPromise) => {
-    //         return resultPromise.result.then((result) => {
-    //             // this._recipeService.deleteRecipe(this.selectedRecipe)
-    //             this.toastr.error('Deleted')
-    //               .then( (toast) => {
-    //                 this._router.navigate(['recipes'])
-    //               });
-    //               this.result = true;
-    //         },
-    //         () =>  this.result = false);
-    //   });
   }
 
   onAddToShoppingCart(item: Ingredient){
@@ -84,17 +89,6 @@ export class RecipeDetailComponent implements OnInit,OnDestroy {
     this._recipeService.addToShoppingCart(item, this._authService.uid);
     this.toastr.success(item.name + ' Added!');
   }
-
-  // confirmCheck(){
-  //   return this.modal.confirm()
-  //       .size('sm')
-  //       .isBlocking(true)
-  //       .showClose(true)
-  //       .keyboard(27)
-  //       // .title('Are you sure?')
-  //       .body('Are you sure?')
-  //       .open();
-  // }
 
   ngOnDestroy(){
     this.getRecipeSubscription.unsubscribe();
